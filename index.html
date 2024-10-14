@@ -42,6 +42,7 @@
       var GoogleAuthProvider;
       var TwitterAuthProvider;
       var SignInWithRedirect;
+      var SignInWithPopup
       var GetRedirectResult;
       // Shows a temporary message banner/ribbon for a few seconds, or
       // a permanent error message on top of the canvas if type=='error'.
@@ -139,7 +140,7 @@
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
     import { getFirestore, collection,  doc, getDoc, getDocs, setDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
-    import { getAuth, GoogleAuthProvider, TwitterAuthProvider, signInWithRedirect, getRedirectResult, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+    import { getAuth, GoogleAuthProvider, TwitterAuthProvider, signInWithRedirect, signInWithPopup, getRedirectResult, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -162,6 +163,7 @@
     window.GoogleAuthProvider = GoogleAuthProvider;
     window.TwitterAuthProvider = TwitterAuthProvider;
     window.SignInWithRedirect = signInWithRedirect;
+    window.SignInWithPopup = signInWithPopup;
     window.GetRedirectResult = getRedirectResult;
 
     firestoreFunc = {
