@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | TOUCHING BLOOD GAME</title>
+    <title>Unity WebGL Player | comfy in 🩸</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+      <canvas id="unity-canvas" width=450 height=800 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -20,7 +20,7 @@
       <div id="unity-footer">
         <div id="unity-webgl-logo"></div>
         <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">TOUCHING BLOOD GAME</div>
+        <div id="unity-build-title">comfy in 🩸</div>
       </div>
     </div>
     <script>
@@ -75,7 +75,7 @@
         codeUrl: buildUrl + "/login.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
-        productName: "TOUCHING BLOOD GAME",
+        productName: "comfy in 🩸",
         productVersion: "1.0",
         showBanner: unityShowBanner,
       };
@@ -105,8 +105,8 @@
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
 
-        canvas.style.width = "960px";
-        canvas.style.height = "600px";
+        canvas.style.width = "450px";
+        canvas.style.height = "800px";
       }
 
       loadingBar.style.display = "block";
@@ -224,6 +224,27 @@
 		}
     }
     
+    </script>
+    <audio id="audioPlayer" preload="none" src="https://stream.faustum.world/radio-2222"></audio>
+
+    <script>
+      // Функція для зміни гучності
+      function changeVolume(volume) {
+        var audioPlayer = document.getElementById('audioPlayer');
+        audioPlayer.volume = volume;
+      }
+    
+      // Функція для запуску програвача
+      function playAudio() {
+        var audioPlayer = document.getElementById('audioPlayer');
+        audioPlayer.play();
+      }
+    
+      // Функція для паузи програвача
+      function stopAudio() {
+        var audioPlayer = document.getElementById('audioPlayer');
+        audioPlayer.pause();
+      }
     </script>
   </body>
 </html>
