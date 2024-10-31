@@ -36,6 +36,7 @@
 
     var unityInstance;
     var firebase;
+    var analytics;
     var firestore;
     var auth;
 
@@ -139,12 +140,17 @@
 
 
   <script type="module" src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.13.2/firebase-analytics.js"></script>
   <script type="module" src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js"></script>
   <script type="module" src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js"></script>
   <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
-    import { getFirestore, collection, doc, getDoc, getDocs, setDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-analytics.js";
+    import {
+      getFirestore, collection, doc, getDoc, getDocs, setDoc, query, orderBy,
+      FieldValue, increment, updateDoc,
+    } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
     import {
       getAuth, GoogleAuthProvider, TwitterAuthProvider,
       signInWithRedirect, signInWithPopup, getRedirectResult,
@@ -168,17 +174,18 @@
     };
     */
     const firebaseConfig = {
-    apiKey: "AIzaSyAR490dLjzq4aRL2TneHSvL2SVc7zT97n0",
-    authDomain: "comfy-in-blood-3018e.firebaseapp.com",
-    projectId: "comfy-in-blood-3018e",
-    storageBucket: "comfy-in-blood-3018e.appspot.com",
-    messagingSenderId: "446439462234",
-    appId: "1:446439462234:web:e4caaa1eb68cf38647cf63",
-    measurementId: "G-XM0HDL1WH2"
-  };
+      apiKey: "AIzaSyAR490dLjzq4aRL2TneHSvL2SVc7zT97n0",
+      authDomain: "comfy-in-blood-3018e.firebaseapp.com",
+      projectId: "comfy-in-blood-3018e",
+      storageBucket: "comfy-in-blood-3018e.appspot.com",
+      messagingSenderId: "446439462234",
+      appId: "1:446439462234:web:e4caaa1eb68cf38647cf63",
+      measurementId: "G-XM0HDL1WH2"
+    };
 
     // Initialize Firebase
     window.firebase = initializeApp(firebaseConfig);
+    window.analytics = getAnalytics(firebase);
     window.auth = getAuth(firebase);
     window.firestore = getFirestore(firebase);
     window.GoogleAuthProvider = GoogleAuthProvider;
@@ -198,133 +205,9 @@
       setDocF: setDoc,
       queryF: query,
       orderByF: orderBy,
-    }
-
-    function GetDocument(collectionPath, documentId, objectName, callback, fallback) {
-      var parsedPath = collectionPath;
-      var parsedId = documentId;
-      var parsedObjectName = objectName;
-      var parsedCallback = callback;
-      var parsedFallback = fallback;
-
-      try {
-
-        var doc = window.firestoreFunc["docF"](window.firestore, parsedPath + "/" + parsedId)
-        window.firestoreFunc["getDocF"](doc).then(function (d) {
-          if (d.exists) {
-            console.log("GetDocument doc = " + JSON.stringify(d.data()));
-
-          } else {
-            console.log("null");
-          }
-        })
-
-      } catch (error) {
-        console.log(JSON.stringify(error, Object.getOwnPropertyNames(error)));
-      }
-    }
-
-    function SetDocument(collectionPath, documentId, value, objectName, callback, fallback) {
-      var parsedPath = collectionPath;
-      var parsedId = documentId;
-      var parsedValue = value;
-      var parsedObjectName = objectName;
-      var parsedCallback = callback;
-      var parsedFallback = fallback;
-
-      var doc = window.firestoreFunc["docF"](window.firestore, parsedPath + "/" + parsedId)
-      try {
-        window.firestoreFunc["setDocF"](doc, JSON.parse(parsedValue), { merge: true }).then(function () {
-          console.log("Success: document " + parsedId + " was set");
-          window.unityInstance.SendMessage(parsedObjectName, parsedCallback, "Success: document " + parsedId + " was set");
-        })
-          .catch(function (error) {
-            console.error(error);
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
-          });
-
-      } catch (error) {
-        console.error(error);
-        window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
-      }
-    }
-
-    /*
-    window.auth.signOut().then(function () {
-      CreateUserWithEmailAndPassword("fordownloadsany@gmail.com", "pass11").then(function (){
-        SignInWithEmailAndPassword("fordownloadsany@gmail.com", "151515");
-      }).catch(function (error){
-        SignInWithEmailAndPassword("fordownloadsany@gmail.com", "151515");
-      });
-    });
-    */
-
-    //SignInWithEmailAndPassword("fordownloadsany@gmail.com", "151515");
-    //SendPasswordResetEmail("fordownloadsany@gmail.com");
-    
-    function CreateUserWithEmailAndPassword(email, password/*, objectName, callback, fallback*/) {
-      var parsedEmail = email;
-      var parsedPassword = password;
-      var parsedObjectName = ("objectName");
-      var parsedCallback = ("callback");
-      var parsedFallback = ("fallback");
-
-      try {
-
-        window.CreateUserWithEmailAndPassword(window.auth, parsedEmail, parsedPassword).then(function (unused) {
-          //window.unityInstance.SendMessage(parsedObjectName, parsedCallback, "Success: signed up for " + parsedEmail);
-          console.log("Success: signed up for " + parsedEmail);
-        }).catch(function (error) {
-          //window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
-          console.log(JSON.stringify(error, Object.getOwnPropertyNames(error)));
-        });
-
-      } catch (error) {
-        //window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
-        console.error(JSON.stringify(error, Object.getOwnPropertyNames(error)));
-      }
-    }
-
-    function SignInWithEmailAndPassword(email, password/*, objectName, callback, fallback*/) {
-      var parsedEmail = (email);
-      var parsedPassword = (password);
-      var parsedObjectName = ("objectName");
-      var parsedCallback = ("callback");
-      var parsedFallback = ("fallback");
-
-      try {
-
-        window.SignInWithEmailAndPassword(window.auth, parsedEmail, parsedPassword).then(function (unused) {
-          //window.unityInstance.SendMessage(parsedObjectName, parsedCallback, "Success: signed in for " + parsedEmail);
-          console.log("Success: signed in for " + parsedEmail);
-        }).catch(function (error) {
-          //window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
-          console.log(JSON.stringify(error, Object.getOwnPropertyNames(error)));
-        });
-
-      } catch (error) {
-        //window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
-        console.error(JSON.stringify(error, Object.getOwnPropertyNames(error)));
-      }
-    }
-
-    function SendPasswordResetEmail(email) {
-      var parsedEmail = (email);
-
-      try {
-
-        window.SendPasswordResetEmail(window.auth, parsedEmail).then(function (unused) {
-          //window.unityInstance.SendMessage(parsedObjectName, parsedCallback, "Success: signed in for " + parsedEmail);
-          console.log("Success: signed in for " + parsedEmail);
-        }).catch(function (error) {
-          //window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
-          console.log(JSON.stringify(error, Object.getOwnPropertyNames(error)));
-        });
-
-      } catch (error) {
-        //window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
-        console.error(JSON.stringify(error, Object.getOwnPropertyNames(error)));
-      }
+      FieldValue: FieldValue,
+      updateDoc: updateDoc,
+      increment: increment,
     }
 
   </script>
