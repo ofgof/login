@@ -277,8 +277,8 @@ function createUnityInstance(canvas, config, onProgress) {
 
     canvas = document.createElement("canvas");
     if (canvas) {
-      gl = canvas.getContext("webgl2");
-      glVersion = gl ? 2 : 0;
+      var gl = canvas.getContext("webgl2");
+      var glVersion = gl ? 2 : 0;
       if (!gl) {
         if (gl = canvas && canvas.getContext("webgl")) glVersion = 1;
       }
